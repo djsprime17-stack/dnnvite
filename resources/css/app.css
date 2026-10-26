@@ -1,0 +1,54 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+@source '../js/**/*.{js,jsx,ts,tsx}';
+
+@theme {
+  --color-dn-ground: #FAF8F5;
+  --color-dn-ground-alt: #F2ECE4;
+  --color-dn-surface: #FFFFFF;
+  --color-dn-ink: #1A1817;
+  --color-dn-ink-muted: #6E6864;
+  --color-dn-accent: #8C6D46;
+  --color-dn-accent-hover: #745834;
+  --color-dn-border: #E5DDD0;
+  --color-dn-border-subtle: #EFE9DF;
+
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+:root {
+  --dn-ground: #FAF8F5;
+  --dn-ground-alt: #F2ECE4;
+  --dn-surface: #FFFFFF;
+  --dn-ink: #1A1817;
+  --dn-ink-muted: #6E6864;
+  --dn-accent: #8C6D46;
+  --dn-accent-hover: #745834;
+  --dn-border: #E5DDD0;
+  --dn-border-subtle: #EFE9DF;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--dn-ground);
+  color: var(--dn-ink);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Editorial selection style */
+::selection {
+  background-color: #8C6D46;
+  color: #FFFFFF;
+}
