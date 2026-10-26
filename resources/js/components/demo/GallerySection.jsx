@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image as ImageIcon, X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
 import ScrollReveal from './ScrollReveal';
 
@@ -11,14 +11,32 @@ export default function GallerySection({ template }) {
     const closeLightbox = () => setLightboxIndex(null);
 
     const nextImage = (e) => {
-        e.stopPropagation();
+        if (e) e.stopPropagation();
         setLightboxIndex((prev) => (prev + 1) % gallery.length);
     };
 
     const prevImage = (e) => {
-        e.stopPropagation();
+        if (e) e.stopPropagation();
         setLightboxIndex((prev) => (prev - 1 + gallery.length) % gallery.length);
     };
+
+    // Keyboard navigation for lightbox
+    useEffect(() => {
+        if (lightboxIndex === null) return;
+
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            } else if (e.key === 'ArrowRight') {
+                nextImage();
+            } else if (e.key === 'ArrowLeft') {
+                prevImage();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [lightboxIndex, gallery.length]);
 
     return (
         <section

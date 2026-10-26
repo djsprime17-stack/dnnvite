@@ -738,8 +738,8 @@ export default function OrderPage({ templateId, onNavigate, onOrderSubmit }) {
                 </form>
             </main>
 
-            {/* Footer */}
-            <Footer />
+            {/* Footer with onNavigate */}
+            <Footer onNavigate={onNavigate} />
         </div>
     );
 }

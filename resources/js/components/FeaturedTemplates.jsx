@@ -21,21 +21,18 @@ export default function FeaturedTemplates({ onNavigate }) {
     return (
         <motion.section
             id="template"
-            initial={{ opacity: 0.85, y: 40 }}
+            initial={{ opacity: 0.9, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.05 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="relative z-10 -mt-10 sm:-mt-12 md:mt-0 pt-16 pb-20 md:py-28 bg-[#F2ECE4] rounded-t-[32px] sm:rounded-t-[44px] md:rounded-t-none shadow-[0_-20px_50px_rgba(26,24,23,0.14)] md:shadow-none border-t border-[#E5DDD0]/80 transition-all"
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="relative z-10 py-18 sm:py-24 md:py-32 bg-[#F2ECE4] border-t border-[#E5DDD0]"
         >
-            {/* Mobile Overlapping Sheet Handle */}
-            <div className="w-12 h-1.5 rounded-full bg-[#8C6D46]/30 mx-auto -mt-10 mb-8 md:hidden" aria-hidden="true" />
-
             <div className="max-w-[1240px] mx-auto px-5 sm:px-8">
                 {/* Section Header */}
                 <AnimatedContent
-                    distance={40}
+                    distance={35}
                     direction="vertical"
-                    duration={0.8}
+                    duration={0.7}
                     ease="power3.out"
                     threshold={0.15}
                 >
@@ -43,7 +40,7 @@ export default function FeaturedTemplates({ onNavigate }) {
                         <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#1A1817] tracking-tight">
                             Koleksi Template Undangan Unggulan
                         </h2>
-                        <p className="text-base text-[#6E6864]">
+                        <p className="text-base text-[#6E6864] leading-relaxed">
                             Setiap template dirancang dengan tipografi editorial mewah dan tata letak yang responsif sempurna di semua layar smartphone.
                         </p>
                     </div>
@@ -56,10 +53,10 @@ export default function FeaturedTemplates({ onNavigate }) {
                             key={cat}
                             type="button"
                             onClick={() => setSelectedCategory(cat)}
-                            className={`px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                            className={`px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-[#8C6D46] focus-visible:outline-none ${
                                 selectedCategory === cat
-                                    ? 'bg-[#8C6D46] text-white shadow-sm'
-                                    : 'bg-white text-[#1A1817]/80 hover:bg-[#FAF8F5] border border-[#E5DDD0]'
+                                    ? 'bg-[#8C6D46] text-white shadow-xs'
+                                    : 'bg-white/90 text-[#1A1817]/85 hover:bg-white border border-[#E5DDD0]'
                             }`}
                         >
                             {cat}
@@ -72,22 +69,22 @@ export default function FeaturedTemplates({ onNavigate }) {
                     {filteredTemplates.map((template, idx) => (
                         <motion.div
                             key={template.id}
-                            initial={{ opacity: 0, y: 35 }}
+                            initial={{ opacity: 0, y: 25 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: false, amount: 0.1 }}
                             transition={{ duration: 0.5, delay: (idx % 4) * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                            className="group bg-white rounded-3xl overflow-hidden border border-[#E5DDD0] shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col h-full"
+                            className="group bg-white rounded-3xl overflow-hidden border border-[#E5DDD0] shadow-2xs hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col h-full"
                         >
                             {/* Card Image Container (Consistent 3:4 ratio) */}
                             <div className="relative aspect-[3/4] overflow-hidden bg-[#FAF8F5]">
                                 <img
                                     src={template.coverImage}
                                     alt={template.name}
-                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                    className="w-full h-full object-cover group-hover:scale-104 transition-transform duration-500"
                                     loading="lazy"
                                 />
                                 {/* Bottom dark gradient for contrast */}
-                                <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/35 via-black/10 to-transparent pointer-events-none" />
+                                <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/40 via-black/15 to-transparent pointer-events-none" />
 
                                 {/* Category Badge */}
                                 <div className="absolute top-3.5 left-3.5 z-10">
@@ -120,7 +117,7 @@ export default function FeaturedTemplates({ onNavigate }) {
                                     {/* Features Checklist with aligned min-height */}
                                     <div className="pt-3 pb-1 space-y-2 border-t border-[#E5DDD0]/70 min-h-[104px]">
                                         {template.features.slice(0, 4).map((f, i) => (
-                                            <div key={i} className="flex items-center gap-2 text-xs text-[#1A1817]/80">
+                                             <div key={i} className="flex items-center gap-2 text-xs text-[#1A1817]/85">
                                                 <div className="w-4 h-4 rounded-full bg-[#8C6D46]/10 text-[#8C6D46] flex items-center justify-center shrink-0">
                                                     <Check className="w-2.5 h-2.5 stroke-[2.5]" />
                                                 </div>
@@ -152,7 +149,7 @@ export default function FeaturedTemplates({ onNavigate }) {
                                         <button
                                             type="button"
                                             onClick={() => onNavigate('demo', template.id)}
-                                            className="h-10 inline-flex items-center justify-center gap-1.5 px-3 rounded-full border border-[#8C6D46] text-[#8C6D46] hover:bg-[#8C6D46]/10 text-xs font-semibold transition-all cursor-pointer whitespace-nowrap active:scale-98"
+                                            className="h-10 inline-flex items-center justify-center gap-1.5 px-3 rounded-full border border-[#8C6D46] text-[#8C6D46] hover:bg-[#8C6D46]/10 active:scale-[0.98] text-xs font-semibold transition-all cursor-pointer whitespace-nowrap focus-visible:ring-2 focus-visible:ring-[#8C6D46] focus-visible:outline-none"
                                         >
                                             <Eye className="w-3.5 h-3.5 shrink-0" />
                                             <span>Lihat Demo</span>
@@ -161,7 +158,7 @@ export default function FeaturedTemplates({ onNavigate }) {
                                         <button
                                             type="button"
                                             onClick={() => handleOrderClick(template)}
-                                            className="h-10 inline-flex items-center justify-center gap-1.5 px-3 rounded-full bg-[#8C6D46] hover:bg-[#745834] text-white text-xs font-semibold shadow-xs hover:shadow-md transition-all cursor-pointer whitespace-nowrap active:scale-98"
+                                            className="h-10 inline-flex items-center justify-center gap-1.5 px-3 rounded-full bg-[#8C6D46] hover:bg-[#745834] active:scale-[0.98] text-white text-xs font-semibold shadow-2xs hover:shadow transition-all cursor-pointer whitespace-nowrap focus-visible:ring-2 focus-visible:ring-[#8C6D46] focus-visible:outline-none"
                                         >
                                             <ShoppingBag className="w-3.5 h-3.5 shrink-0" />
                                             <span>Pesan</span>
@@ -178,7 +175,7 @@ export default function FeaturedTemplates({ onNavigate }) {
                     <button
                         type="button"
                         onClick={() => onNavigate('catalog')}
-                        className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white hover:bg-[#FAF8F5] border border-[#8C6D46] text-[#8C6D46] font-semibold text-sm shadow-xs hover:shadow transition-all cursor-pointer"
+                        className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-white hover:bg-[#FAF8F5] active:scale-[0.98] border border-[#8C6D46] text-[#8C6D46] font-semibold text-sm shadow-xs hover:shadow transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-[#8C6D46] focus-visible:outline-none"
                     >
                         <span>Buka Katalog Lengkap dengan Filter &amp; Pencarian</span>
                         <ArrowRight className="w-4 h-4" />

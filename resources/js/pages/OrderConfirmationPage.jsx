@@ -437,8 +437,8 @@ export default function OrderConfirmationPage({ orderData, onNavigate }) {
                 </div>
             </main>
 
-            {/* Footer */}
-            <Footer />
+            {/* Footer with onNavigate */}
+            <Footer onNavigate={onNavigate} />
         </div>
     );
 }

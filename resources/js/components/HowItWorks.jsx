@@ -8,15 +8,12 @@ export default function HowItWorks() {
     return (
         <motion.section
             id="cara-pesan"
-            initial={{ opacity: 0.85, y: 40 }}
+            initial={{ opacity: 0.9, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.05 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="relative z-30 -mt-10 sm:-mt-12 md:mt-0 pt-16 pb-20 md:py-28 bg-[#F2ECE4] rounded-t-[32px] sm:rounded-t-[44px] md:rounded-t-none shadow-[0_-20px_50px_rgba(26,24,23,0.14)] md:shadow-none border-t border-[#E5DDD0]/80 transition-all"
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="relative z-30 py-18 sm:py-24 md:py-32 bg-[#F2ECE4] border-t border-[#E5DDD0]"
         >
-            {/* Mobile Overlapping Sheet Handle */}
-            <div className="w-12 h-1.5 rounded-full bg-[#8C6D46]/30 mx-auto -mt-10 mb-8 md:hidden" aria-hidden="true" />
-
             <div className="max-w-[1240px] mx-auto px-5 sm:px-8">
                 {/* Section Header */}
                 <AnimatedContent
