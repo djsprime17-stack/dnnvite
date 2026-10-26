@@ -5,13 +5,14 @@ import React, { useEffect, useRef, useState } from 'react';
  * High-performance, two-way scroll animation wrapper.
  * Automatically discovers its parent scroll container (e.g. smartphone simulator container or window)
  * and animates elements in when scrolling down AND gracefully re-triggers when scrolling back up.
+ * Guarantees identical smooth animation experience on both mobile devices and desktop.
  */
 export default function ScrollReveal({
     children,
     animation = 'fade-up', // 'fade-up' | 'zoom-in' | 'fade-left' | 'fade-right' | 'fade'
     duration = 0.85,
     delay = 0,
-    threshold = 0.15,
+    threshold = 0.05,
     className = '',
     style = {},
     staggerChildren = false,
@@ -19,20 +20,10 @@ export default function ScrollReveal({
 }) {
     const elementRef = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
-    const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
-    useEffect(() => {
-        const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-        setPrefersReducedMotion(mediaQuery.matches);
-
-        const handleChange = (e) => setPrefersReducedMotion(e.matches);
-        mediaQuery.addEventListener?.('change', handleChange);
-        return () => mediaQuery.removeEventListener?.('change', handleChange);
-    }, []);
 
     useEffect(() => {
         const el = elementRef.current;
-        if (!el || prefersReducedMotion) return;
+        if (!el) return;
 
         // Auto-detect closest scrollable parent container (for frame mockup mode)
         const findScrollParent = (node) => {
@@ -50,32 +41,75 @@ export default function ScrollReveal({
 
         const scrollParent = findScrollParent(el);
 
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                // Two-way scroll trigger: true when entering, false when leaving
-                setIsVisible(entry.isIntersecting);
-            },
-            {
-                root: scrollParent || null,
-                threshold: Math.max(0.05, Math.min(threshold, 0.5)),
-                rootMargin: '20px 0px -40px 0px',
-            }
-        );
+        // Immediate visibility test on mount and during scroll
+        const checkVisibility = () => {
+            if (!el) return;
+            const rect = el.getBoundingClientRect();
+            const windowH = window.innerHeight || document.documentElement.clientHeight;
+            const inWindow = rect.top < windowH - 20 && rect.bottom > 20;
 
-        observer.observe(el);
+            if (scrollParent) {
+                const pRect = scrollParent.getBoundingClientRect();
+                const inParent = rect.top < pRect.bottom + 40 && rect.bottom > pRect.top - 40;
+                setIsVisible(inWindow && inParent);
+            } else {
+                setIsVisible(inWindow);
+            }
+        };
+
+        // Immediate check on mount
+        checkVisibility();
+
+        let observer = null;
+        if (typeof IntersectionObserver !== 'undefined') {
+            try {
+                observer = new IntersectionObserver(
+                    ([entry]) => {
+                        // Two-way scroll trigger: true when entering, false when leaving
+                        setIsVisible(entry.isIntersecting);
+                    },
+                    {
+                        root: scrollParent || null,
+                        threshold: Math.max(0.01, Math.min(threshold, 0.2)),
+                        rootMargin: '40px 0px 40px 0px',
+                    }
+                );
+                observer.observe(el);
+            } catch (err) {
+                console.warn('IntersectionObserver error in ScrollReveal:', err);
+                setIsVisible(true);
+            }
+        }
+
+        // Passive scroll listeners for active 2-way tracking on mobile touch and desktop wheel
+        let ticking = false;
+        const handleScroll = () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    checkVisibility();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        window.addEventListener('resize', handleScroll, { passive: true });
+        if (scrollParent) {
+            scrollParent.addEventListener('scroll', handleScroll, { passive: true });
+        }
 
         return () => {
-            observer.disconnect();
+            if (observer) {
+                observer.disconnect();
+            }
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('resize', handleScroll);
+            if (scrollParent) {
+                scrollParent.removeEventListener('scroll', handleScroll);
+            }
         };
-    }, [threshold, prefersReducedMotion]);
-
-    if (prefersReducedMotion) {
-        return (
-            <div ref={elementRef} className={className} style={style}>
-                {children}
-            </div>
-        );
-    }
+    }, [threshold]);
 
     // Define CSS transform transitions based on animation variant
     const getTransform = () => {

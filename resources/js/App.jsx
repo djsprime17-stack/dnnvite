@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { MotionConfig } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import FeaturedTemplates from './components/FeaturedTemplates';
@@ -102,92 +103,100 @@ export default function App() {
         }
     };
 
-    // Render Admin Pages
-    if (route.page === 'admin-login') {
-        return <AdminLoginPage onNavigate={handleNavigate} />;
-    }
+    const renderPageContent = () => {
+        // Render Admin Pages
+        if (route.page === 'admin-login') {
+            return <AdminLoginPage onNavigate={handleNavigate} />;
+        }
 
-    if (route.page === 'admin') {
-        return <AdminDashboardPage onNavigate={handleNavigate} />;
-    }
+        if (route.page === 'admin') {
+            return <AdminDashboardPage onNavigate={handleNavigate} />;
+        }
 
-    if (route.page === 'admin-templates') {
-        return <AdminTemplatesPage onNavigate={handleNavigate} />;
-    }
+        if (route.page === 'admin-templates') {
+            return <AdminTemplatesPage onNavigate={handleNavigate} />;
+        }
 
-    if (route.page === 'admin-settings') {
-        return <AdminSettingsPage onNavigate={handleNavigate} />;
-    }
+        if (route.page === 'admin-settings') {
+            return <AdminSettingsPage onNavigate={handleNavigate} />;
+        }
 
-    // Render Order Confirmation Page
-    if (route.page === 'confirmation') {
+        // Render Order Confirmation Page
+        if (route.page === 'confirmation') {
+            return (
+                <OrderConfirmationPage
+                    orderData={currentOrder}
+                    onNavigate={handleNavigate}
+                />
+            );
+        }
+
+        // Render Order Page
+        if (route.page === 'order') {
+            return (
+                <OrderPage
+                    templateId={route.templateId || 'amora-serenade'}
+                    onNavigate={handleNavigate}
+                    onOrderSubmit={handleOrderSubmit}
+                />
+            );
+        }
+
+        // Render Demo Page (Full Interactive Simulation)
+        if (route.page === 'demo') {
+            return (
+                <DemoPage
+                    templateId={route.templateId || 'amora-serenade'}
+                    onNavigate={handleNavigate}
+                />
+            );
+        }
+
+        // Render Dedicated Catalog Page
+        if (route.page === 'catalog') {
+            return <CatalogPage onNavigate={handleNavigate} />;
+        }
+
+        // Default: Render Landing Page
         return (
-            <OrderConfirmationPage
-                orderData={currentOrder}
-                onNavigate={handleNavigate}
-            />
+            <div className="min-h-screen bg-[#FAF8F5] text-[#1A1817] flex flex-col font-sans selection:bg-[#8C6D46] selection:text-white">
+                {/* Header & Navigation */}
+                <Navbar onNavigate={handleNavigate} />
+
+                {/* Main Landing Sections */}
+                <main className="flex-1">
+                    <Hero onNavigate={handleNavigate} />
+                    <FeaturedTemplates onNavigate={handleNavigate} />
+                    <Benefits />
+                    <HowItWorks />
+                    <FAQ />
+                </main>
+
+                {/* Footer */}
+                <Footer onNavigate={handleNavigate} />
+
+                {/* Floating WhatsApp Quick Action Button */}
+                <aside aria-label="Bantuan Langsung">
+                    <a
+                        href="https://wa.me/6285723138515?text=Halo%20Admin%20DNVITE,%20saya%20ingin%20bertanya%20mengenai%20undangan%20pernikahan%20digital."
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="fixed bottom-6 right-6 z-40 p-4 rounded-full bg-[#8C6D46] hover:bg-[#745834] text-white shadow-xl hover:scale-105 transition-all duration-200 flex items-center justify-center group"
+                        aria-label="Hubungi Admin WhatsApp"
+                    >
+                        <MessageCircle className="w-6 h-6 fill-white" />
+                        <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs group-hover:ml-2 text-xs font-semibold transition-all duration-300">
+                            Chat Admin WA
+                        </span>
+                    </a>
+                </aside>
+            </div>
         );
-    }
+    };
 
-    // Render Order Page
-    if (route.page === 'order') {
-        return (
-            <OrderPage
-                templateId={route.templateId || 'amora-serenade'}
-                onNavigate={handleNavigate}
-                onOrderSubmit={handleOrderSubmit}
-            />
-        );
-    }
-
-    // Render Demo Page (Full Interactive Simulation)
-    if (route.page === 'demo') {
-        return (
-            <DemoPage
-                templateId={route.templateId || 'amora-serenade'}
-                onNavigate={handleNavigate}
-            />
-        );
-    }
-
-    // Render Dedicated Catalog Page
-    if (route.page === 'catalog') {
-        return <CatalogPage onNavigate={handleNavigate} />;
-    }
-
-    // Default: Render Landing Page
     return (
-        <div className="min-h-screen bg-[#FAF8F5] text-[#1A1817] flex flex-col font-sans selection:bg-[#8C6D46] selection:text-white">
-            {/* Header & Navigation */}
-            <Navbar onNavigate={handleNavigate} />
-
-            {/* Main Landing Sections */}
-            <main className="flex-1">
-                <Hero onNavigate={handleNavigate} />
-                <FeaturedTemplates onNavigate={handleNavigate} />
-                <Benefits />
-                <HowItWorks />
-                <FAQ />
-            </main>
-
-            {/* Footer */}
-            <Footer onNavigate={handleNavigate} />
-
-            {/* Floating WhatsApp Quick Action Button */}
-            <aside aria-label="Bantuan Langsung">
-                <a
-                    href="https://wa.me/6285723138515?text=Halo%20Admin%20DNVITE,%20saya%20ingin%20bertanya%20mengenai%20undangan%20pernikahan%20digital."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="fixed bottom-6 right-6 z-40 p-4 rounded-full bg-[#8C6D46] hover:bg-[#745834] text-white shadow-xl hover:scale-105 transition-all duration-200 flex items-center justify-center group"
-                    aria-label="Hubungi Admin WhatsApp"
-                >
-                    <MessageCircle className="w-6 h-6 fill-white" />
-                    <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs group-hover:ml-2 text-xs font-semibold transition-all duration-300">
-                        Chat Admin WA
-                    </span>
-                </a>
-            </aside>
-        </div>
+        <MotionConfig reducedMotion="never">
+            {renderPageContent()}
+        </MotionConfig>
     );
 }

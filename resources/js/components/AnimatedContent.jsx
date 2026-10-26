@@ -71,9 +71,9 @@ const AnimatedContent = ({
 
       gsap.set(el, { visibility: 'visible' });
 
-      // Soften animation if reduced motion is requested, but do not kill it completely
-      const effectiveDistance = reduce ? Math.min(distance, 25) : distance;
-      const effectiveDuration = reduce ? Math.min(duration, 0.5) : duration;
+      // Use full animations on both desktop and mobile
+      const effectiveDistance = distance;
+      const effectiveDuration = duration;
 
       const from = {
         [axis]: effectiveDistance * sign,

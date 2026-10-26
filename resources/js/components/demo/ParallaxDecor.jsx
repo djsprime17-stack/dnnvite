@@ -30,7 +30,8 @@ export default function ParallaxDecor({ theme }) {
         const handleScroll = () => {
             if (!ticking) {
                 window.requestAnimationFrame(() => {
-                    const top = scroller === window ? window.scrollY : scroller.scrollTop;
+                    const scrollerTop = scroller && scroller !== window ? scroller.scrollTop : 0;
+                    const top = scrollerTop > 0 ? scrollerTop : window.scrollY;
                     setOffsetY(top);
                     ticking = false;
                 });
@@ -38,16 +39,14 @@ export default function ParallaxDecor({ theme }) {
             }
         };
 
-        if (scroller === window) {
-            window.addEventListener('scroll', handleScroll, { passive: true });
-        } else if (scroller) {
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        if (scroller && scroller !== window) {
             scroller.addEventListener('scroll', handleScroll, { passive: true });
         }
 
         return () => {
-            if (scroller === window) {
-                window.removeEventListener('scroll', handleScroll);
-            } else if (scroller) {
+            window.removeEventListener('scroll', handleScroll);
+            if (scroller && scroller !== window) {
                 scroller.removeEventListener('scroll', handleScroll);
             }
         };
