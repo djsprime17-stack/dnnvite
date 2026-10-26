@@ -119,6 +119,57 @@ export default function OrderPage({ templateId, onNavigate, onOrderSubmit }) {
         setIsSubmitting(true);
         setErrorMsg('');
 
+        // Prepare order data upfront (used regardless of API availability)
+        const clientOrderRef = 'DNV-' + new Date().toISOString().slice(2, 4) + new Date().toISOString().slice(5, 7) + '-' + Math.random().toString(36).substring(2, 6).toUpperCase();
+
+        const orderData = {
+            orderRef: clientOrderRef,
+            orderDate: new Date().toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+            }),
+            template: {
+                id: template.id,
+                name: template.name,
+                category: template.category,
+                price: template.price,
+                coverImage: template.coverImage,
+            },
+            customer: {
+                name: customerName,
+                whatsapp: customerWhatsApp,
+                email: customerEmail || '-',
+            },
+            couple: {
+                groomNickname,
+                groomFullName: groomFullName || groomNickname,
+                groomParents: groomParents || '-',
+                brideNickname,
+                brideFullName: brideFullName || brideNickname,
+                brideParents: brideParents || '-',
+                weddingDate,
+            },
+            events: {
+                akad: {
+                    time: akadTime || '08:00 - Selesai',
+                    venue: akadVenue,
+                    address: akadAddress || akadVenue,
+                },
+                resepsi: {
+                    time: resepsiTime || '11:00 - Selesai',
+                    venue: resepsiVenue,
+                    address: resepsiAddress || resepsiVenue,
+                },
+            },
+            photos: {
+                mainPhotoPreview,
+                galleryPreviews,
+            },
+            notes: notes || '-',
+            paymentStatus: 'Menunggu Konfirmasi',
+        };
+
         try {
             const formData = new FormData();
             formData.append('customer_name', customerName.trim());
@@ -169,78 +220,49 @@ export default function OrderPage({ templateId, onNavigate, onOrderSubmit }) {
                 body: formData,
             });
 
-            const result = await response.json();
-
-            if (!response.ok) {
-                const message = result.message || 'Gagal menyimpan pesanan. Silakan periksa kembali data Anda.';
-                const details = result.errors ? Object.values(result.errors).flat().join(' ') : '';
-                throw new Error(`${message} ${details}`.trim());
+            // Safely read response as text first to handle 0-byte, empty, or non-JSON responses without syntax errors
+            const responseText = await response.text();
+            let result = null;
+            if (responseText && responseText.trim()) {
+                try {
+                    result = JSON.parse(responseText);
+                } catch {
+                    result = null;
+                }
             }
 
-            const savedOrder = result.data;
-            const orderRef = savedOrder.order_ref;
+            if (result && !response.ok) {
+                // Real validation error from backend
+                const message = result.message || 'Gagal menyimpan pesanan. Silakan periksa kembali data Anda.';
+                const details = result.errors ? Object.values(result.errors).flat().join(' ') : '';
+                setErrorMsg(`${message} ${details}`.trim());
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setIsSubmitting(false);
+                return;
+            }
 
-            const orderData = {
-                orderRef,
-                id: savedOrder.id,
-                orderDate: new Date(savedOrder.created_at || Date.now()).toLocaleDateString('id-ID', {
+            if (result && result.data) {
+                // API success — update with server-generated data
+                const savedOrder = result.data;
+                orderData.orderRef = savedOrder.order_ref || orderData.orderRef;
+                orderData.id = savedOrder.id;
+                orderData.orderDate = new Date(savedOrder.created_at || Date.now()).toLocaleDateString('id-ID', {
                     day: 'numeric',
                     month: 'long',
                     year: 'numeric',
-                }),
-                template: {
-                    id: template.id,
-                    name: template.name,
-                    category: template.category,
-                    price: template.price,
-                    coverImage: template.coverImage,
-                },
-                customer: {
-                    name: customerName,
-                    whatsapp: customerWhatsApp,
-                    email: customerEmail || '-',
-                },
-                couple: {
-                    groomNickname,
-                    groomFullName: groomFullName || groomNickname,
-                    groomParents: groomParents || '-',
-                    brideNickname,
-                    brideFullName: brideFullName || brideNickname,
-                    brideParents: brideParents || '-',
-                    weddingDate,
-                },
-                events: {
-                    akad: {
-                        time: akadTime || '08:00 - Selesai',
-                        venue: akadVenue,
-                        address: akadAddress || akadVenue,
-                    },
-                    resepsi: {
-                        time: resepsiTime || '11:00 - Selesai',
-                        venue: resepsiVenue,
-                        address: resepsiAddress || resepsiVenue,
-                    },
-                },
-                photos: {
-                    mainPhotoPreview,
-                    galleryPreviews,
-                },
-                notes: notes || '-',
-                paymentStatus: 'Menunggu Konfirmasi',
-            };
-
-            if (onOrderSubmit) {
-                onOrderSubmit(orderData);
+                });
             }
-
-            onNavigate('confirmation');
         } catch (err) {
-            console.error('Order submission failed:', err);
-            setErrorMsg(err.message || 'Terjadi gangguan saat memproses pesanan ke server. Silakan coba kembali.');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        } finally {
-            setIsSubmitting(false);
+            console.warn('API unavailable or static host, proceeding with client order flow:', err);
         }
+
+        // Always proceed to confirmation page (WhatsApp handles the actual order)
+        if (onOrderSubmit) {
+            onOrderSubmit(orderData);
+        }
+
+        onNavigate('confirmation');
+        setIsSubmitting(false);
     };
 
     return (
