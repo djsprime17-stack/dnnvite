@@ -7,7 +7,10 @@ export default function Footer({ onNavigate }) {
     };
 
     return (
-        <footer className="bg-[#1A1817] text-[#FAF8F5] pt-20 pb-12 border-t border-[#1A1817]">
+        <footer className="relative z-50 -mt-10 sm:-mt-12 md:mt-0 bg-[#1A1817] text-[#FAF8F5] pt-16 pb-12 rounded-t-[32px] sm:rounded-t-[44px] md:rounded-t-none shadow-[0_-20px_50px_rgba(0,0,0,0.35)] md:shadow-none border-t border-white/10 transition-all">
+            {/* Mobile Overlapping Sheet Handle */}
+            <div className="w-12 h-1.5 rounded-full bg-[#8C6D46]/40 mx-auto -mt-10 mb-8 md:hidden" aria-hidden="true" />
+
             <div className="max-w-[1240px] mx-auto px-5 sm:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-16 border-b border-[#FAF8F5]/10">
                     {/* Brand Column */}

@@ -13,7 +13,16 @@ export default function EventSection({ template }) {
     };
 
     return (
-        <section id="events" className="py-20 px-6 sm:px-10 space-y-12 max-w-3xl mx-auto relative z-10">
+        <section
+            id="events"
+            className="relative z-20 -mt-6 sm:-mt-8 pt-16 pb-20 px-6 sm:px-10 rounded-t-[32px] shadow-[0_-12px_32px_rgba(0,0,0,0.06)] space-y-12 max-w-3xl mx-auto transition-all"
+            style={{ backgroundColor: theme.cardBg }}
+        >
+            {/* Delicate Overlapping Handle Accent */}
+            <div
+                className="w-10 h-1 rounded-full mx-auto -mt-10 mb-8 opacity-40"
+                style={{ backgroundColor: theme.accent }}
+            />
             <ScrollReveal animation="fade-up" duration={0.8} delay={0.1}>
                 <div className="text-center space-y-3">
                     <span

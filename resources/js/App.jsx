@@ -14,6 +14,7 @@ import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import AdminTemplatesPage from './pages/admin/AdminTemplatesPage';
 import AdminSettingsPage from './pages/admin/AdminSettingsPage';
+import MobileFloatingDock from './components/MobileFloatingDock';
 import { MessageCircle } from 'lucide-react';
 
 export default function App() {
@@ -173,8 +174,8 @@ export default function App() {
             {/* Footer */}
             <Footer onNavigate={handleNavigate} />
 
-            {/* Floating WhatsApp Quick Action Button */}
-            <aside aria-label="Bantuan Langsung">
+            {/* Desktop Floating WhatsApp Quick Action Button */}
+            <aside aria-label="Bantuan Langsung" className="hidden md:block">
                 <a
                     href="https://wa.me/6285723138515?text=Halo%20Admin%20DNVITE,%20saya%20ingin%20bertanya%20mengenai%20undangan%20pernikahan%20digital."
                     target="_blank"
@@ -188,6 +189,9 @@ export default function App() {
                     </span>
                 </a>
             </aside>
+
+            {/* Mobile Animated Floating Action Dock */}
+            <MobileFloatingDock onNavigate={handleNavigate} />
         </div>
     );
 }

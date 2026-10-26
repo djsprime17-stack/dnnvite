@@ -21,7 +21,16 @@ export default function GallerySection({ template }) {
     };
 
     return (
-        <section id="gallery" className="py-20 px-6 sm:px-10 max-w-3xl mx-auto space-y-12 text-center relative z-10">
+        <section
+            id="gallery"
+            className="relative z-40 -mt-6 sm:-mt-8 pt-16 pb-20 px-6 sm:px-10 rounded-t-[32px] shadow-[0_-12px_32px_rgba(0,0,0,0.06)] max-w-3xl mx-auto space-y-12 text-center transition-all"
+            style={{ backgroundColor: theme.cardBg }}
+        >
+            {/* Delicate Overlapping Handle Accent */}
+            <div
+                className="w-10 h-1 rounded-full mx-auto -mt-10 mb-8 opacity-40"
+                style={{ backgroundColor: theme.accent }}
+            />
             <ScrollReveal animation="fade-up" duration={0.8} delay={0.1}>
                 <div className="space-y-3">
                     <span

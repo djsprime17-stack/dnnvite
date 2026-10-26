@@ -5,7 +5,13 @@ import AnimatedContent from './AnimatedContent';
 
 export default function HowItWorks() {
     return (
-        <section id="cara-pesan" className="py-20 md:py-28 bg-[#F2ECE4] border-t border-[#E5DDD0]">
+        <section
+            id="cara-pesan"
+            className="relative z-30 -mt-10 sm:-mt-12 md:mt-0 pt-16 pb-20 md:py-28 bg-[#F2ECE4] rounded-t-[32px] sm:rounded-t-[44px] md:rounded-t-none shadow-[0_-16px_40px_rgba(26,24,23,0.08)] md:shadow-none border-t border-[#E5DDD0]/80 transition-all"
+        >
+            {/* Mobile Overlapping Sheet Handle */}
+            <div className="w-12 h-1.5 rounded-full bg-[#8C6D46]/30 mx-auto -mt-10 mb-8 md:hidden" aria-hidden="true" />
+
             <div className="max-w-[1240px] mx-auto px-5 sm:px-8">
                 {/* Section Header */}
                 <AnimatedContent

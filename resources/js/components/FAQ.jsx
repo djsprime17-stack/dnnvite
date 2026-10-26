@@ -10,7 +10,13 @@ export default function FAQ() {
     };
 
     return (
-        <section id="faq" className="py-20 md:py-28 bg-[#FAF8F5]">
+        <section
+            id="faq"
+            className="relative z-40 -mt-10 sm:-mt-12 md:mt-0 pt-16 pb-20 md:py-28 bg-[#FAF8F5] rounded-t-[32px] sm:rounded-t-[44px] md:rounded-t-none shadow-[0_-16px_40px_rgba(26,24,23,0.08)] md:shadow-none border-t border-[#E5DDD0]/80 transition-all"
+        >
+            {/* Mobile Overlapping Sheet Handle */}
+            <div className="w-12 h-1.5 rounded-full bg-[#8C6D46]/30 mx-auto -mt-10 mb-8 md:hidden" aria-hidden="true" />
+
             <div className="max-w-[860px] mx-auto px-5 sm:px-8">
                 {/* Section Header */}
                 <div className="text-center mb-16 space-y-3">
