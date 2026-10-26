@@ -5,7 +5,7 @@ import HeroPhoneMockup from './HeroPhoneMockup';
 
 export default function Hero({ onNavigate }) {
     return (
-        <section className="relative pt-32 pb-24 sm:pb-28 md:pt-40 md:pb-32 overflow-hidden bg-[#FAF8F5]">
+        <section className="sticky top-0 z-0 md:relative pt-28 pb-24 sm:pb-28 md:pt-40 md:pb-32 overflow-hidden bg-[#FAF8F5]">
             <div className="max-w-[1240px] mx-auto px-5 sm:px-8">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
                     {/* Left Column: Editorial Headline & Copy */}

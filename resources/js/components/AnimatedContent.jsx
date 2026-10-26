@@ -71,13 +71,12 @@ const AnimatedContent = ({
 
       gsap.set(el, { visibility: 'visible' });
 
-      if (reduce) {
-        callbacksRef.current.onComplete?.();
-        return;
-      }
+      // Soften animation if reduced motion is requested, but do not kill it completely
+      const effectiveDistance = reduce ? Math.min(distance, 25) : distance;
+      const effectiveDuration = reduce ? Math.min(duration, 0.5) : duration;
 
       const from = {
-        [axis]: distance * sign,
+        [axis]: effectiveDistance * sign,
         scale,
         opacity: animateOpacity ? initialOpacity : 1
       };
@@ -85,7 +84,7 @@ const AnimatedContent = ({
         [axis]: 0,
         scale: 1,
         opacity: 1,
-        duration,
+        duration: effectiveDuration,
         ease
       };
 

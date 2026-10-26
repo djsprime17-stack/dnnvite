@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, ShoppingBag, Check, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { TEMPLATES } from '../data/templates';
 import AnimatedContent from './AnimatedContent';
 
@@ -18,9 +19,13 @@ export default function FeaturedTemplates({ onNavigate }) {
     };
 
     return (
-        <section
+        <motion.section
             id="template"
-            className="relative z-10 -mt-10 sm:-mt-12 md:mt-0 pt-16 pb-20 md:py-28 bg-[#F2ECE4] rounded-t-[32px] sm:rounded-t-[44px] md:rounded-t-none shadow-[0_-16px_40px_rgba(26,24,23,0.08)] md:shadow-none border-t border-[#E5DDD0]/80 transition-all"
+            initial={{ opacity: 0.85, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.05 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="relative z-10 -mt-10 sm:-mt-12 md:mt-0 pt-16 pb-20 md:py-28 bg-[#F2ECE4] rounded-t-[32px] sm:rounded-t-[44px] md:rounded-t-none shadow-[0_-20px_50px_rgba(26,24,23,0.14)] md:shadow-none border-t border-[#E5DDD0]/80 transition-all"
         >
             {/* Mobile Overlapping Sheet Handle */}
             <div className="w-12 h-1.5 rounded-full bg-[#8C6D46]/30 mx-auto -mt-10 mb-8 md:hidden" aria-hidden="true" />
@@ -64,9 +69,13 @@ export default function FeaturedTemplates({ onNavigate }) {
 
                 {/* Template Cards Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7 items-stretch">
-                    {filteredTemplates.map((template) => (
-                        <div
+                    {filteredTemplates.map((template, idx) => (
+                        <motion.div
                             key={template.id}
+                            initial={{ opacity: 0, y: 35 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: false, amount: 0.1 }}
+                            transition={{ duration: 0.5, delay: (idx % 4) * 0.08, ease: [0.22, 1, 0.36, 1] }}
                             className="group bg-white rounded-3xl overflow-hidden border border-[#E5DDD0] shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col h-full"
                         >
                             {/* Card Image Container (Consistent 3:4 ratio) */}
@@ -160,7 +169,7 @@ export default function FeaturedTemplates({ onNavigate }) {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
 
@@ -176,6 +185,6 @@ export default function FeaturedTemplates({ onNavigate }) {
                     </button>
                 </div>
             </div>
-        </section>
+        </motion.section>
     );
 }

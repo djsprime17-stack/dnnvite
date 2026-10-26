@@ -1,5 +1,6 @@
 import React from 'react';
 import { MessageCircle, Heart, ArrowUp } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function Footer({ onNavigate }) {
     const scrollToTop = () => {
@@ -7,7 +8,13 @@ export default function Footer({ onNavigate }) {
     };
 
     return (
-        <footer className="relative z-50 -mt-10 sm:-mt-12 md:mt-0 bg-[#1A1817] text-[#FAF8F5] pt-16 pb-12 rounded-t-[32px] sm:rounded-t-[44px] md:rounded-t-none shadow-[0_-20px_50px_rgba(0,0,0,0.35)] md:shadow-none border-t border-white/10 transition-all">
+        <motion.footer
+            initial={{ opacity: 0.9, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.05 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="relative z-50 -mt-10 sm:-mt-12 md:mt-0 bg-[#1A1817] text-[#FAF8F5] pt-16 pb-12 rounded-t-[32px] sm:rounded-t-[44px] md:rounded-t-none shadow-[0_-20px_50px_rgba(0,0,0,0.35)] md:shadow-none border-t border-white/10 transition-all"
+        >
             {/* Mobile Overlapping Sheet Handle */}
             <div className="w-12 h-1.5 rounded-full bg-[#8C6D46]/40 mx-auto -mt-10 mb-8 md:hidden" aria-hidden="true" />
 
@@ -115,6 +122,6 @@ export default function Footer({ onNavigate }) {
                     </div>
                 </div>
             </div>
-        </footer>
+        </motion.footer>
     );
 }

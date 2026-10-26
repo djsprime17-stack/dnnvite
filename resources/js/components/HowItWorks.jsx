@@ -1,13 +1,18 @@
 import React from 'react';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { HOW_IT_WORKS_STEPS } from '../data/templates';
 import AnimatedContent from './AnimatedContent';
 
 export default function HowItWorks() {
     return (
-        <section
+        <motion.section
             id="cara-pesan"
-            className="relative z-30 -mt-10 sm:-mt-12 md:mt-0 pt-16 pb-20 md:py-28 bg-[#F2ECE4] rounded-t-[32px] sm:rounded-t-[44px] md:rounded-t-none shadow-[0_-16px_40px_rgba(26,24,23,0.08)] md:shadow-none border-t border-[#E5DDD0]/80 transition-all"
+            initial={{ opacity: 0.85, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.05 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="relative z-30 -mt-10 sm:-mt-12 md:mt-0 pt-16 pb-20 md:py-28 bg-[#F2ECE4] rounded-t-[32px] sm:rounded-t-[44px] md:rounded-t-none shadow-[0_-20px_50px_rgba(26,24,23,0.14)] md:shadow-none border-t border-[#E5DDD0]/80 transition-all"
         >
             {/* Mobile Overlapping Sheet Handle */}
             <div className="w-12 h-1.5 rounded-full bg-[#8C6D46]/30 mx-auto -mt-10 mb-8 md:hidden" aria-hidden="true" />
@@ -42,8 +47,12 @@ export default function HowItWorks() {
                     className="grid grid-cols-1 md:grid-cols-3 gap-8 relative"
                 >
                     {HOW_IT_WORKS_STEPS.map((step, idx) => (
-                        <div
+                        <motion.div
                             key={idx}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: false, amount: 0.12 }}
+                            transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] }}
                             className="bg-white rounded-3xl p-8 border border-[#E5DDD0] shadow-sm flex flex-col justify-between space-y-6 relative text-left"
                         >
                             <div className="space-y-4">
@@ -62,7 +71,7 @@ export default function HowItWorks() {
                                 <CheckCircle2 className="w-4 h-4" />
                                 <span>Mudah &amp; Terpandu</span>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </AnimatedContent>
 
@@ -97,6 +106,6 @@ export default function HowItWorks() {
                     </div>
                 </AnimatedContent>
             </div>
-        </section>
+        </motion.section>
     );
 }

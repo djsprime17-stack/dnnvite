@@ -1,5 +1,6 @@
 import React from 'react';
 import { Smartphone, Music2, MessageSquareHeart, Navigation, CreditCard, HeartHandshake } from 'lucide-react';
+import { motion } from 'framer-motion';
 import AnimatedContent from './AnimatedContent';
 
 export default function Benefits() {
@@ -37,9 +38,13 @@ export default function Benefits() {
     ];
 
     return (
-        <section
+        <motion.section
             id="fitur"
-            className="relative z-20 -mt-10 sm:-mt-12 md:mt-0 pt-16 pb-20 md:py-28 bg-[#FAF8F5] rounded-t-[32px] sm:rounded-t-[44px] md:rounded-t-none shadow-[0_-16px_40px_rgba(26,24,23,0.08)] md:shadow-none border-t border-[#E5DDD0]/80 transition-all"
+            initial={{ opacity: 0.85, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.05 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="relative z-20 -mt-10 sm:-mt-12 md:mt-0 pt-16 pb-20 md:py-28 bg-[#FAF8F5] rounded-t-[32px] sm:rounded-t-[44px] md:rounded-t-none shadow-[0_-20px_50px_rgba(26,24,23,0.14)] md:shadow-none border-t border-[#E5DDD0]/80 transition-all"
         >
             {/* Mobile Overlapping Sheet Handle */}
             <div className="w-12 h-1.5 rounded-full bg-[#8C6D46]/30 mx-auto -mt-10 mb-8 md:hidden" aria-hidden="true" />
@@ -76,8 +81,12 @@ export default function Benefits() {
                     {benefits.map((b, idx) => {
                         const Icon = b.icon;
                         return (
-                            <div
+                            <motion.div
                                 key={idx}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: false, amount: 0.12 }}
+                                transition={{ duration: 0.5, delay: (idx % 3) * 0.08, ease: [0.22, 1, 0.36, 1] }}
                                 className="bg-white p-8 rounded-3xl border border-[#E5DDD0] shadow-sm hover:border-[#8C6D46] transition-all duration-300 text-left space-y-4 group"
                             >
                                 <div className="w-12 h-12 rounded-2xl bg-[#F2ECE4] text-[#8C6D46] group-hover:bg-[#8C6D46] group-hover:text-white flex items-center justify-center transition-colors duration-300">
@@ -89,11 +98,11 @@ export default function Benefits() {
                                 <p className="text-sm text-[#6E6864] leading-relaxed">
                                     {b.description}
                                 </p>
-                            </div>
+                            </motion.div>
                         );
                     })}
                 </AnimatedContent>
             </div>
-        </section>
+        </motion.section>
     );
 }
